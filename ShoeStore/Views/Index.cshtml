@@ -1,0 +1,27 @@
+﻿@model ShoeStore.Models.Shoe
+
+@{
+    ViewData["Title"] = "Dodaj nowe obuwie";
+}
+
+<h1>Dodaj nowe obuwie</h1>
+
+<form asp-action="Create">
+    <div class="form-group">
+        <label asp-for="Name">Nazwa</label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Description">Opis</label>
+        <input asp-for="Description" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Price">Cena</label>
+        <input asp-for="Price" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Size">Rozmiar</label>
+        <input asp-for="Size" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Dodaj</button>
+</form>
