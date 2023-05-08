@@ -38,3 +38,4 @@ Soon there will be such functionalities as:
 4. Improvement of the user interface with more advanced front-end technologies
 5. Adding more products and product categories
 6. Implementation of discounts and promotional codes
+
