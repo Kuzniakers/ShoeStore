@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShoeStore.Data;
-using YourNamespace;
+using ShoeStore;
 
 
 namespace ShoeStore
@@ -12,7 +12,7 @@ namespace ShoeStore
             
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            
             builder.Services.AddRazorPages();
             builder.Services.AddDbContext<ShoeStoreContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -22,11 +22,11 @@ namespace ShoeStore
             var host = CreateHostBuilder(args).Build();
             host.Run();
 
-            // Configure the HTTP request pipeline.
+            
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+               
                 app.UseHsts();
             }
 
