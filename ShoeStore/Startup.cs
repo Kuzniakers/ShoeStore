@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ShoeStore.Data;
 
-namespace YourNamespace // Zastąp "YourNamespace" nazwą przestrzeni nazw swojego projektu
+namespace ShoeStore
 {
     public class Startup
     {
