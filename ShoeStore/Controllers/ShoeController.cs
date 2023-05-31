@@ -1,8 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ShoeStore.Data;
+using Microsoft.EntityFrameworkCore;
 using ShoeStore.Models;
+using System;
 using System.Collections.Generic;
-
+using System.Linq;
+using System.Threading.Tasks;
+using System.Text.Json;
+using ShoeStore.Data;
 
 namespace ShoeStore.Controllers
 {
@@ -17,48 +21,51 @@ namespace ShoeStore.Controllers
 
         public IActionResult Index()
         {
-            var shoes = new List<Shoe>
+            if (!_context.Shoes.Any())
             {
-                new Shoe { Id = 1, Name = "But sportowy", Description = "Wygodny but sportowy", Price = 200, Size = 42 },
-                new Shoe { Id = 2, Name = "Elegancki but", Description = "Elegancki but na specjalne okazje", Price = 300, Size = 45 }
-            };
+                var shoes = new List<Shoe>
+        {
+            new Shoe { Name = "But sportowy", Description = "Wygodny but sportowy", Price = 200, Size = 42 },
+            new Shoe { Name = "Elegancki but", Description = "Elegancki but na specjalne okazje", Price = 300, Size = 45 }
+        };
 
-            return View(shoes);
+                foreach (var shoe in shoes)
+                {
+                    _context.Add(shoe);
+                }
+
+                _context.SaveChanges();
+            }
+
+            var shoesToDisplay = _context.Shoes.ToList();
+            return View(shoesToDisplay);
         }
-        // Metoda GET do wyświetlania formularza tworzenia nowego produktu
+
+
+
         [HttpGet]
-        public IActionResult Create()
+        public IActionResult Cart()
         {
             return View();
         }
 
-        // Metoda POST do przesłania danych z formularza tworzenia nowego produktu
-        [HttpPost]
-        public IActionResult Create(Shoe shoe)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Shoes.Add(shoe);
-                _context.SaveChanges();
-                return RedirectToAction("Index");
-            }
 
-            return View(shoe);
-        }
-
-        // Metoda POST do usuwania istniejącego produktu
         [HttpPost]
-        public IActionResult Delete(int id)
+        [Route("api/shoes/addtocart/{id}")]
+        public JsonResult AddToCart(int id)
         {
             var shoe = _context.Shoes.Find(id);
 
             if (shoe != null)
             {
-                _context.Shoes.Remove(shoe);
-                _context.SaveChanges();
+                var cartItemsJson = HttpContext.Session.GetString("Cart");
+                var cartItems = string.IsNullOrEmpty(cartItemsJson) ? new List<Shoe>() : JsonSerializer.Deserialize<List<Shoe>>(cartItemsJson);
+                cartItems.Add(shoe);
+                HttpContext.Session.SetString("Cart", JsonSerializer.Serialize(cartItems));
+                return Json(new { success = true });
             }
 
-            return RedirectToAction("Index");
+            return Json(new { success = false });
         }
 
     }
