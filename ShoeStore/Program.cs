@@ -7,6 +7,7 @@ namespace ShoeStore
 {
     public class Program
     {
+        // Main builder for the whole app
         public static void Main(string[] args)
         {
             
